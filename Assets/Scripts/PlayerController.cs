@@ -7,16 +7,16 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour 
 {
 	[SerializeField]
-	private GameObject rocketPrefab;
+	GameObject rocketPrefab;
 
 	[SerializeField]
-	private float rocketOffsetDistance;
+	float rocketOffsetDistance;
 
-	private MouseAim aimScript = null;
+	MouseAim aimScript = null;
 
 	[SerializeField]
-	private float fireCooldown;
-	private float lastFireTimestamp = 0;
+	float fireCooldown;
+	float lastFireTimestamp = 0;
 
 	void Start()
 	{
@@ -25,7 +25,11 @@ public class PlayerController : MonoBehaviour
 	
 	void Update()
 	{
+#if UNITY_ANDROID
+		if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
+#else
 		if (Input.GetMouseButtonDown(0))
+#endif
 		{
 			Fire();
 		}

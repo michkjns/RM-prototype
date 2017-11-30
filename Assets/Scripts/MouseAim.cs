@@ -24,9 +24,24 @@ public class MouseAim : MonoBehaviour
 	{
 		lineRenderer.SetPosition(0, transform.position);
 
-		Vector3 mouseScreenPoint = Input.mousePosition;
-		mouseScreenPoint.z = -Camera.main.transform.position.z;
-		Vector3 mouseWorldPoint = Camera.main.ScreenToWorldPoint(mouseScreenPoint);
+#if UNITY_ANDROID
+		if (Input.touchCount > 0)
+		{
+			UpdateTargetingLine(Input.GetTouch(0).position);
+		}
+		else
+		{
+			lineRenderer.SetPosition(1, transform.position);
+		}
+#else
+		UpdateTargetingLine(Input.mousePosition);
+#endif
+	}
+
+	private void UpdateTargetingLine(Vector3 targetScreenPosition)
+	{
+		targetScreenPosition.z = -Camera.main.transform.position.z;
+		Vector3 mouseWorldPoint = Camera.main.ScreenToWorldPoint(targetScreenPosition);
 		aimDirection = Vector3.Normalize(mouseWorldPoint - transform.position);
 		float lineLength = Vector3.Distance(mouseWorldPoint, transform.position);
 		lineLength = dotSize * Mathf.Round(Mathf.Min(lineLength, maxLineLength) / dotSize);

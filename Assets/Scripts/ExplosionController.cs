@@ -35,7 +35,6 @@ public class ExplosionController : MonoBehaviour
 		{
 			Vector3 forceDirection = Vector3.Normalize(playerObject.transform.position - position);
 			forceDirection.z = .0f;
-			Debug.Log(forceDirection);
 			float forcePower = force * (1.0f - distance / radius);
 			playerObject.GetComponent<Rigidbody>().AddForce(forceDirection * forcePower, ForceMode.VelocityChange);
 			//playerObject.GetComponent<Player>().Damage(force);
