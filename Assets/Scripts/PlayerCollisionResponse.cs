@@ -14,7 +14,7 @@ public class PlayerCollisionResponse : MonoBehaviour
 	{
 		if (other.gameObject.CompareTag("Finish"))
 		{
-			LevelManager.Instance.SwitchToNextLevel();
+			LevelManager.Instance.SwitchToNextRoom();
 		}
 		else if (other.gameObject.CompareTag("Death"))
 		{

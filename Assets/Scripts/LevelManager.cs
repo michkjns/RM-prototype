@@ -21,6 +21,9 @@ public class LevelManager : MonoBehaviour
 
 	GameObject playerObject = null;
 
+	public delegate void MultiDelegate();
+	public MultiDelegate OnNextRoomLoaded { get; set; }
+
 	void Awake()
 	{
 		if (Instance != null && Instance != this)
@@ -47,11 +50,12 @@ public class LevelManager : MonoBehaviour
 		levels[0].gameObject.SetActive(true);
 	}
 
-	public void SwitchToNextLevel()
+	public void SwitchToNextRoom()
 	{
 		if (nextLevel < levels.Length)
 		{
 			SwitchLevel(nextLevel);
+			OnNextRoomLoaded.Invoke();
 		}
 		else
 		{

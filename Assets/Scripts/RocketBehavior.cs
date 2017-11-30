@@ -40,7 +40,7 @@ public class RocketBehavior : MonoBehaviour
 
 	private void OnCollisionEnter(Collision collision)
 	{
-		GameObject.Instantiate(explodeEffectPrefab, transform.position, Quaternion.identity);
+		GameObject.Instantiate(explodeEffectPrefab, transform.position, Quaternion.identity, transform.parent);
 		ExplosionController.Instance.SpawnExplosion(transform.position, explosionSize, explosionForce);
 		Destroy(this.gameObject);
 	}
