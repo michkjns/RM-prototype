@@ -8,15 +8,18 @@ public class LevelManager : MonoBehaviour
 	public static LevelManager Instance { get; private set; }
 
 	[SerializeField]
-	private int startLevel;
+	string nextScene;
 
 	[SerializeField]
-	private Level[] levels;
+	int startLevel;
 
-	private int currentLevel;
-	private int nextLevel { get { return currentLevel + 1; } }
+	[SerializeField]
+	Level[] levels;
 
-	public GameObject playerObject = null;
+	int currentLevel;
+	int nextLevel { get { return currentLevel + 1; } }
+
+	GameObject playerObject = null;
 
 	void Awake()
 	{
@@ -34,12 +37,7 @@ public class LevelManager : MonoBehaviour
 		currentLevel = startLevel;
 
 		playerObject = GameObject.FindGameObjectWithTag("Player");
-
-		if (playerObject == null)
-		{
-			Debug.Log("LevelManager::Start - Found no Player object!");
-			Debug.Break();
-		}
+		Debug.Assert(playerObject != null, "Found no Player object!");
 
 		foreach (Level level in levels)
 		{
@@ -57,7 +55,7 @@ public class LevelManager : MonoBehaviour
 		}
 		else
 		{
-			SceneManager.LoadScene("MainMenu");
+			SceneManager.LoadScene(nextScene);
 		}
 	}
 
@@ -68,27 +66,20 @@ public class LevelManager : MonoBehaviour
 			levels[currentLevel].gameObject.SetActive(false);
 			levels[newLevel].gameObject.SetActive(true);
 			currentLevel = newLevel;
-			ResetCurrentLevel();
+			ResetLevel();
 		}
 		else
 		{
-			ResetCurrentLevel();
+			ResetLevel();
 		}
 	}
 
-	private void Update()
-	{
-		if (Input.GetKeyDown(KeyCode.R))
-		{
-			ResetCurrentLevel();
-		}
-	}
-
-	void ResetCurrentLevel()
+	public void ResetLevel()
 	{
 		Rigidbody playerRigidbody = playerObject.GetComponent<Rigidbody>();
 		playerRigidbody.velocity = new Vector3(.0f, .0f, .0f);
 		playerObject.transform.position = levels[currentLevel].PlayerStartTransform.position;
 		playerObject.transform.rotation = levels[currentLevel].PlayerStartTransform.rotation;
+		playerObject.SetActive(true);
 	}
 }
