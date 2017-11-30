@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RocketBehavior : MonoBehaviour 
+public class RocketBehavior : MonoBehaviour
 {
 	[SerializeField]
 	private float speed;
@@ -16,11 +16,14 @@ public class RocketBehavior : MonoBehaviour
 	[SerializeField]
 	private float explosionForce;
 
+	[SerializeField]
+	private GameObject explodeEffectPrefab;
+
 	private float distanceTraveled = .0f;
 
 	void Start () 
 	{
-		
+		Debug.Assert(explodeEffectPrefab != null, "explodeEffectPrefab is missing!");
 	}
 	
 	void FixedUpdate () 
@@ -37,6 +40,7 @@ public class RocketBehavior : MonoBehaviour
 
 	private void OnCollisionEnter(Collision collision)
 	{
+		GameObject.Instantiate(explodeEffectPrefab, transform.position, Quaternion.identity);
 		ExplosionController.Instance.SpawnExplosion(transform.position, explosionSize, explosionForce);
 		Destroy(this.gameObject);
 	}

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(MouseAim))]
+[RequireComponent(typeof(AudioSource))]
 
 public class PlayerController : MonoBehaviour 
 {
@@ -10,17 +11,25 @@ public class PlayerController : MonoBehaviour
 	GameObject rocketPrefab;
 
 	[SerializeField]
-	float rocketOffsetDistance;
+	AudioClip rocketShootSound;
 
-	MouseAim aimScript = null;
+	[SerializeField]
+	float rocketOffsetDistance;
 
 	[SerializeField]
 	float fireCooldown;
+
 	float lastFireTimestamp = 0;
+	float volLowRange = .5f;
+	float volHighRange = 1.0f;
+
+	MouseAim aimScript = null;
+	AudioSource audioSource = null;
 
 	void Start()
 	{
 		aimScript = GetComponent<MouseAim>();
+		audioSource = GetComponent<AudioSource>();
 	}
 	
 	void Update()
@@ -47,6 +56,8 @@ public class PlayerController : MonoBehaviour
 
 			rocket.GetComponent<Rigidbody>().AddForce(transform.parent.GetComponent<Rigidbody>().velocity, 
 				ForceMode.VelocityChange);
+
+			audioSource.PlayOneShot(rocketShootSound, Random.Range(volLowRange, volHighRange));
 		}
 	}
 
