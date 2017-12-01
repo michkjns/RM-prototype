@@ -24,7 +24,12 @@ public class GameManager : MonoBehaviour
 
 	void Awake()
 	{
-		Debug.Assert(Instance == null, "There may only be 1 GameManager!");
+		if (Instance != null && Instance != this)
+		{
+			Debug.Log("Found multiple instances of GameManager.");
+			Destroy(gameObject);
+		}
+
 		Instance = this;
 	}
 
