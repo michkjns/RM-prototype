@@ -23,7 +23,7 @@ public class TimeTrialMode : MonoBehaviour
 		deathMessage.SetActive(false);
 
 		timerText = GameManager.UI.transform.Find("GameplayUI/TimerText").GetComponent<Text>();
-		Debug.Assert(timerText != null, "LevelManager object not found");
+		Debug.Assert(timerText != null, "TimerText object not found");
 
 		GameManager.LevelManager.OnNextRoomLoaded += OnNextRoomLoaded;
 		ResetLevel();
