@@ -6,7 +6,7 @@ public class ExplosionController : MonoBehaviour
 {
 	public static ExplosionController Instance { get; private set; }
 
-	public GameObject playerObject;
+	GameObject playerObject;
 
 	void Awake()
 	{
@@ -21,11 +21,7 @@ public class ExplosionController : MonoBehaviour
 	
 	void Start () 
 	{
-		if (playerObject == null)
-		{
-			Debug.LogError("PlayerObject is not set in ExplosionController!");
-			Debug.Break();
-		}
+		playerObject = GameManager.PlayerObject;
 	}
 	
 	public void SpawnExplosion(Vector3 position, float radius, float force)
