@@ -10,16 +10,14 @@ public class SelfDestructTimer : MonoBehaviour
 	[SerializeField]
 	float waitTimeSeconds = 0.0f;
 
-	ParticleSystem[] particleSystems;
-
 	void Start () 
 	{
 		if (waitForParticleSystems)
 		{
-			particleSystems = GetComponentsInChildren<ParticleSystem>();
+			ParticleSystem[] particleSystems = GetComponentsInChildren<ParticleSystem>();
 			for (int i = 0; i < particleSystems.Length; ++i)
 			{
-				waitTimeSeconds = Mathf.Max(i, particleSystems[i].main.duration);
+				waitTimeSeconds = Mathf.Max(waitTimeSeconds, particleSystems[i].main.duration);
 			}
 		}
 
