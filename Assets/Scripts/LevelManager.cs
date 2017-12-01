@@ -85,5 +85,6 @@ public class LevelManager : MonoBehaviour
 		playerObject.transform.position = levels[currentLevel].PlayerStartTransform.position;
 		playerObject.transform.rotation = levels[currentLevel].PlayerStartTransform.rotation;
 		playerObject.SetActive(true);
+
 	}
 }

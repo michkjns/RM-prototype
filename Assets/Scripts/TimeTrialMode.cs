@@ -5,52 +5,62 @@ using UnityEngine.UI;
 
 public class TimeTrialMode : MonoBehaviour 
 {
-	GameObject deathMessage = null;
+	MessageLabel gameMessage = null;
 	Text timerText = null;
+	float timerSeconds = 0.0f;
 
-	float levelTimer = 0.0f;
+	[SerializeField]
+	float hintDelaySeconds;
+
+	Coroutine showMessageDelayedRoutine = null;
 
 	public enum GameModeState { Pregame, Play, Failed };
 	GameModeState state;
-	public GameModeState State { get { return state; } } 
+	public GameModeState State { get { return state; } }
 
 	void Start () 
 	{
 		GameManager.PlayerObject.GetComponent<PlayerCollisionResponse>().OnPlayerDeath += OnPlayerDeath;
 
-		deathMessage = GameManager.UI.transform.Find("GameplayUI/DeathMessage").gameObject;
-		Debug.Assert(deathMessage != null, "DeathMessage object not found");
-		deathMessage.SetActive(false);
+		gameMessage = GameManager.UI.transform.Find("GameplayUI/GameMessage").GetComponent<MessageLabel>();
+		Debug.Assert(gameMessage != null, "GameMessage object not found");
 
-		timerText = GameManager.UI.transform.Find("GameplayUI/TimerText").GetComponent<Text>();
+		timerText = GameManager.UI.transform.Find("GameplayUI/Timer").GetComponent<Text>();
 		Debug.Assert(timerText != null, "TimerText object not found");
 
-		GameManager.LevelManager.OnNextRoomLoaded += OnNextRoomLoaded;
+		GameManager.LevelManager.OnNextRoomLoaded += OnRoomLoaded;
 		ResetLevel();
 	}
 
-	public void OnNextRoomLoaded()
+	void OnRoomLoaded()
 	{
+		if (showMessageDelayedRoutine != null)
+		{
+			StopCoroutine(showMessageDelayedRoutine);
+			showMessageDelayedRoutine = null;
+		}
+
 		state = GameModeState.Pregame;
+		gameMessage.ShowMessage(gameMessage.Messages.BeginMessage);
 		ResetTimer();
 	}
 
-	public void OnPlayerDeath()
+	void OnPlayerDeath()
 	{
-		if (deathMessage)
+		if (gameMessage)
 		{
-			deathMessage.SetActive(true);
+			gameMessage.ShowMessage(gameMessage.Messages.DeathMessage);
 			state = GameModeState.Failed;
 		}
 	}
 
-	public void OnGUI()
+	void OnGUI()
 	{
 		if (state == GameModeState.Play)
 		{
-			string minutes = Mathf.Floor(levelTimer / 60).ToString("00");
-			string seconds = (levelTimer % 60).ToString("00");
-			string fraction = ((levelTimer * 1000.0f) % 1000.0f).ToString("00");
+			string minutes = Mathf.Floor(timerSeconds / 60).ToString("00");
+			string seconds = (timerSeconds % 60).ToString("00");
+			string fraction = ((timerSeconds * 1000.0f) % 1000.0f).ToString("00");
 			timerText.text = minutes + ":" + seconds + ":" + fraction;
 		}
 	}
@@ -59,7 +69,7 @@ public class TimeTrialMode : MonoBehaviour
 	{
 		if (state == GameModeState.Play)
 		{
-			levelTimer += Time.deltaTime;
+			timerSeconds += Time.deltaTime;
 		}
 
 		if (Input.GetButtonDown("Reset") || (state == GameModeState.Failed && Input.GetButtonDown("Fire1")))
@@ -71,25 +81,31 @@ public class TimeTrialMode : MonoBehaviour
 		{
 			BeginTimeTrial();
 		}
-
 	}
 
 	void BeginTimeTrial()
 	{
 		state = GameModeState.Play;
+		gameMessage.HideMessage();
+		showMessageDelayedRoutine = StartCoroutine(ShowMessageDelayed(hintDelaySeconds, gameMessage.Messages.HintMessage));
 	}
 
 	void ResetLevel()
 	{
-		deathMessage.SetActive(false);
 		GameManager.LevelManager.ResetLevel();
-		state = GameModeState.Pregame;
-		ResetTimer();
+		OnRoomLoaded();
 	}
 
 	void ResetTimer()
 	{
-		levelTimer = 0.0f;
-		timerText.text = "00:00:00";
+		timerSeconds = 0.0f;
+		timerText.text = "00:00:000";
+	}
+
+	IEnumerator ShowMessageDelayed(float delay, string message)
+	{
+		yield return new WaitForSeconds(hintDelaySeconds);
+		gameMessage.ShowMessage(message);
+		showMessageDelayedRoutine = null;
 	}
 }
