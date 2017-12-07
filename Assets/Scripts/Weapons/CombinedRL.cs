@@ -53,7 +53,7 @@ public class CombinedRL : BaseWeapon
 			lastFireTimestamp = Time.time;
 
 			RocketBehavior rocket = GameObject.Instantiate(projectilePrefab, transform.position + aim.AimDirection *
-				projectileOffsetDistance, Quaternion.LookRotation(aim.AimDirection), GameManager.Projectiles.transform).GetComponent<RocketBehavior>();
+				projectileOffsetDistance, Quaternion.LookRotation(aim.AimDirection), GameManager.Projectiles).GetComponent<RocketBehavior>();
 
 			rocket.SetExplosionForce(power);
 			currentCharge = 0.0f;

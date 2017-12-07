@@ -50,6 +50,14 @@ public class LevelManager : MonoBehaviour
 		levels[0].gameObject.SetActive(true);
 	}
 
+	private void Update()
+	{
+		if (Input.GetButtonDown("Menu"))
+		{
+			SceneManager.LoadScene("MainMenu");
+		}
+	}
+
 	public void SwitchToNextRoom()
 	{
 		if (nextLevel < levels.Length)
@@ -70,20 +78,18 @@ public class LevelManager : MonoBehaviour
 			levels[currentLevel].gameObject.SetActive(false);
 			levels[newLevel].gameObject.SetActive(true);
 			currentLevel = newLevel;
-			ResetLevel();
 		}
-		else
-		{
-			ResetLevel();
-		}
+
+		ResetLevel();
 	}
 
 	public void ResetLevel()
 	{
 		Rigidbody playerRigidbody = playerObject.GetComponent<Rigidbody>();
 		playerRigidbody.velocity = new Vector3(.0f, .0f, .0f);
-		playerObject.transform.position = levels[currentLevel].PlayerStartTransform.position;
-		playerObject.transform.rotation = levels[currentLevel].PlayerStartTransform.rotation;
+
+		levels[currentLevel].gameObject.SetActive(true);
+	
 		playerObject.SetActive(true);
 
 		GameManager.ClearProjectiles();
