@@ -72,12 +72,12 @@ public class TimeTrialMode : MonoBehaviour
 			timerSeconds += Time.deltaTime;
 		}
 
-		if (Input.GetButtonDown("Reset") || (state == GameModeState.Failed && Input.GetButtonDown("Fire1")))
+		if (Input.GetButtonDown("Reset") || (state == GameModeState.Failed && Input.GetButtonDown("Fire")))
 		{
 			ResetLevel();
 		}
 
-		if (Input.GetButtonDown("Fire1") && state == GameModeState.Pregame)
+		if (Input.GetButtonDown("Fire") && state == GameModeState.Pregame)
 		{
 			BeginTimeTrial();
 		}

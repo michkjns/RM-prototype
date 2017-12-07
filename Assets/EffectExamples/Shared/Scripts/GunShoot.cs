@@ -30,7 +30,7 @@ public class GunShoot : MonoBehaviour {
 
 	void Update () 
 	{
-		if (Input.GetButtonDown("Fire1") && Time.time > nextFire && !gunAim.GetIsOutOfBounds()) 
+		if (Input.GetButtonDown("Fire") && Time.time > nextFire && !gunAim.GetIsOutOfBounds()) 
 		{
 			nextFire = Time.time + fireRate;
 			muzzleFlash.Play();

@@ -6,14 +6,13 @@ using UnityEngine;
 [CustomEditor(typeof(CameraBehavior))]
 public class CameraBehaviorEditor : Editor
 {
+	public SerializedProperty cameraMode;
 	public SerializedProperty cameraOffset;
 	public SerializedProperty horizontalMaxDistance;
 	public SerializedProperty horizontalLerpSpeed;
-	public SerializedProperty cameraMode;
 
 	void OnEnable()
 	{
-		// Setup the SerializedProperties
 		cameraOffset = serializedObject.FindProperty("offset");
 		horizontalMaxDistance = serializedObject.FindProperty("maxDistance");
 		horizontalLerpSpeed = serializedObject.FindProperty("lerpSpeed");

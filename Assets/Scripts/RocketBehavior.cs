@@ -14,11 +14,9 @@ public class RocketBehavior : MonoBehaviour
 	private float explosionSize;
 
 	[SerializeField]
-	private float explosionForce;
-
-	[SerializeField]
 	private GameObject explodeEffectPrefab;
 
+	private float explosionForce;
 	private float distanceTraveled = .0f;
 	private bool hasExploded = false;
 
@@ -26,7 +24,12 @@ public class RocketBehavior : MonoBehaviour
 	{
 		Debug.Assert(explodeEffectPrefab != null, "explodeEffectPrefab is missing!");
 	}
-	
+
+	public void SetExplosionForce(float force)
+	{
+		explosionForce = force;
+	}
+
 	void FixedUpdate () 
 	{
 		Vector3 translation = transform.forward * speed;

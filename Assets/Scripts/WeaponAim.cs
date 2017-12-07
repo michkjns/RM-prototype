@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(LineRenderer))]
-
-public class MouseAim : MonoBehaviour
+public class WeaponAim : MonoBehaviour
 {
-	public float maxLineLength;
+	[SerializeField]
+	private float maxLineLength;
+
+	private float lineLengthModifier = 1.0f;
+	public float LineLengthModifier { get { return lineLengthModifier; } set { lineLengthModifier = value; } }
 
 	private Vector3 aimDirection;
 	public Vector3 AimDirection { get { return aimDirection; } }
@@ -43,8 +46,9 @@ public class MouseAim : MonoBehaviour
 		targetScreenPosition.z = -Camera.main.transform.position.z;
 		Vector3 mouseWorldPoint = Camera.main.ScreenToWorldPoint(targetScreenPosition);
 		aimDirection = Vector3.Normalize(mouseWorldPoint - transform.position);
-		float lineLength = Vector3.Distance(mouseWorldPoint, transform.position);
-		lineLength = dotSize * Mathf.Round(Mathf.Min(lineLength, maxLineLength) / dotSize);
+		float lineLength = Mathf.Min(Vector3.Distance(mouseWorldPoint, transform.position), maxLineLength) * lineLengthModifier;
+		lineLength = dotSize * Mathf.Round(lineLength / dotSize);
 		lineRenderer.SetPosition(1, transform.position + aimDirection * lineLength);
 	}
 }
+
