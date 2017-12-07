@@ -40,9 +40,12 @@ public class GameManager : MonoBehaviour
 
 	public static void ClearProjectiles()
 	{
-		for (int i = Projectiles.childCount - 1; i != 0; --i)
+		if (Projectiles.childCount > 0)
 		{
-			Destroy(Projectiles.GetChild(i).gameObject);
+			for (int i = Projectiles.childCount - 1; i != 0; --i)
+			{
+				Destroy(Projectiles.GetChild(i).gameObject);
+			}
 		}
 	}
 }

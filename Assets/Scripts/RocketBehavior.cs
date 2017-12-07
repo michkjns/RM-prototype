@@ -20,6 +20,7 @@ public class RocketBehavior : MonoBehaviour
 	private GameObject explodeEffectPrefab;
 
 	private float distanceTraveled = .0f;
+	private bool hasExploded = false;
 
 	void Start () 
 	{
@@ -40,8 +41,12 @@ public class RocketBehavior : MonoBehaviour
 
 	private void OnCollisionEnter(Collision collision)
 	{
-		GameObject.Instantiate(explodeEffectPrefab, transform.position, Quaternion.identity, transform.parent);
-		ExplosionController.Instance.SpawnExplosion(transform.position, explosionSize, explosionForce);
-		Destroy(this.gameObject);
+		if (!hasExploded)
+		{
+			hasExploded = true;
+			GameObject.Instantiate(explodeEffectPrefab, transform.position, Quaternion.identity, transform.parent);
+			ExplosionController.Instance.SpawnExplosion(transform.position, explosionSize, explosionForce);
+			Destroy(this.gameObject);
+		}
 	}
 }
