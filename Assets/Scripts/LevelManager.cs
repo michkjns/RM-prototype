@@ -56,7 +56,12 @@ public class LevelManager : MonoBehaviour
 		{
 			SceneManager.LoadScene("MainMenu");
 		}
-	}
+
+		if (Input.GetKeyDown(KeyCode.N))
+		{
+			SwitchToNextRoom();
+		}
+	}	
 
 	public void SwitchToNextRoom()
 	{
@@ -85,13 +90,8 @@ public class LevelManager : MonoBehaviour
 
 	public void ResetLevel()
 	{
-		Rigidbody playerRigidbody = playerObject.GetComponent<Rigidbody>();
-		playerRigidbody.velocity = new Vector3(.0f, .0f, .0f);
-
+		levels[currentLevel].gameObject.SetActive(false);
 		levels[currentLevel].gameObject.SetActive(true);
-	
-		playerObject.SetActive(true);
-
 		GameManager.ClearProjectiles();
 	}
 }

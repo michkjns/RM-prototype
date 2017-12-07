@@ -4,26 +4,26 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-	public static GameManager Instance { get; private set; }
+	public static GameManager   Instance     { get; private set; }
+	public static TimeTrialMode GameMode     { get { return Instance.gameMode; } }
+	public static LevelManager  LevelManager { get { return Instance.levelManager; } }
+	public static GameObject    PlayerObject { get { return Instance.playerObject; } }
+	public static Transform     Projectiles  { get { return Instance.projectiles.transform; } }
+	public static GameObject    UI           { get { return Instance.ui; } }
 
 	[SerializeField]
 	TimeTrialMode gameMode;
-	public static TimeTrialMode GameMode { get { return Instance.gameMode; } }
 
 	[SerializeField]
 	LevelManager levelManager;
-	public static LevelManager LevelManager { get { return Instance.levelManager; } }
 
 	[SerializeField]
 	GameObject playerObject;
-	public static GameObject PlayerObject { get { return Instance.playerObject; } }
 
 	[SerializeField]
 	GameObject ui;
-	public static GameObject UI { get { return Instance.ui; } }
 
 	GameObject projectiles;
-	public static Transform Projectiles { get { return Instance.projectiles.transform; } }
 
 	void Awake()
 	{
