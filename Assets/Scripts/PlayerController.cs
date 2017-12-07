@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(MouseAim))]
 [RequireComponent(typeof(AudioSource))]
 
 public class PlayerController : MonoBehaviour 
@@ -25,13 +24,11 @@ public class PlayerController : MonoBehaviour
 
 	MouseAim aimScript = null;
 	AudioSource audioSource = null;
-	GameObject rocketParent = null;
 
 	void Start()
 	{
-		aimScript = GetComponent<MouseAim>();
+		aimScript = transform.Find("PlayerAim").GetComponent<MouseAim>();
 		audioSource = GetComponent<AudioSource>();
-		rocketParent = new GameObject("Rockets");
 	}
 	
 	void Update()
@@ -52,11 +49,8 @@ public class PlayerController : MonoBehaviour
 		{
 			lastFireTimestamp = Time.time;
 
-			GameObject rocket = GameObject.Instantiate(rocketPrefab, transform.position + aimScript.AimDirection * 
-				rocketOffsetDistance, Quaternion.LookRotation(aimScript.AimDirection), rocketParent.transform);
-
-			rocket.GetComponent<Rigidbody>().AddForce(transform.parent.GetComponent<Rigidbody>().velocity, 
-				ForceMode.VelocityChange);
+			GameObject.Instantiate(rocketPrefab, transform.position + aimScript.AimDirection * 
+				rocketOffsetDistance, Quaternion.LookRotation(aimScript.AimDirection), GameManager.Projectiles.transform);
 
 			audioSource.PlayOneShot(rocketShootSound, Random.Range(volLowRange, volHighRange));
 		}

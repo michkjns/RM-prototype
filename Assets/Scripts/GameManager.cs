@@ -22,6 +22,9 @@ public class GameManager : MonoBehaviour
 	GameObject ui;
 	public static GameObject UI { get { return Instance.ui; } }
 
+	GameObject projectiles;
+	public static Transform Projectiles { get { return Instance.projectiles.transform; } }
+
 	void Awake()
 	{
 		if (Instance != null && Instance != this)
@@ -31,10 +34,15 @@ public class GameManager : MonoBehaviour
 		}
 
 		Instance = this;
+
+		projectiles = new GameObject("Projectiles");
 	}
 
-	void Update()
+	public static void ClearProjectiles()
 	{
-
+		for (int i = Projectiles.childCount - 1; i != 0; --i)
+		{
+			Destroy(Projectiles.GetChild(i).gameObject);
+		}
 	}
 }

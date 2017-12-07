@@ -86,5 +86,6 @@ public class LevelManager : MonoBehaviour
 		playerObject.transform.rotation = levels[currentLevel].PlayerStartTransform.rotation;
 		playerObject.SetActive(true);
 
+		GameManager.ClearProjectiles();
 	}
 }
