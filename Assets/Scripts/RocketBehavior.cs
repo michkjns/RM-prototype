@@ -50,6 +50,11 @@ public class RocketBehavior : MonoBehaviour
 			GameObject.Instantiate(explodeEffectPrefab, transform.position, Quaternion.identity, transform.parent);
 			ExplosionController.Instance.SpawnExplosion(transform.position, explosionSize, explosionForce);
 			Destroy(this.gameObject);
+
+			if (collision.gameObject.CompareTag("Destructable"))
+			{
+				collision.gameObject.SetActive(false);
+			}
 		}
 	}
 }

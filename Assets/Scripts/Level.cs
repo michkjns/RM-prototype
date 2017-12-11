@@ -1,15 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-
 
 public class Level : MonoBehaviour 
 {
 	public GameObject playerStart;
 	public GameObject UIObject;
 	public Transform PlayerStartTransform { get { return playerStart.transform; } }
+	Transform[] destructableWalls = null;
 
-	[ExecuteInEditMode]
+	private void Start()
+	{
+		destructableWalls = transform.Cast<Transform>().Where(c => c.gameObject.tag == "Destructable").ToArray();
+	}
+
 	private void OnEnable()
 	{
 		if (UIObject) UIObject.SetActive(true);
@@ -19,9 +24,16 @@ public class Level : MonoBehaviour
 		GameManager.PlayerObject.transform.rotation = PlayerStartTransform.rotation;
 		GameManager.PlayerObject.GetComponent<Rigidbody>().velocity = new Vector3(.0f, .0f, .0f);
 		GameManager.PlayerObject.SetActive(true);
+
+		if (destructableWalls != null)
+		{
+			foreach (Transform wall in destructableWalls)
+			{
+				wall.gameObject.SetActive(true);
+			}
+		}
 	}
 
-	[ExecuteInEditMode]
 	private void OnDisable()
 	{
 		if (UIObject) UIObject.SetActive(false);
